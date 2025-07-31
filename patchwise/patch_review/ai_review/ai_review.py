@@ -16,7 +16,7 @@ from ..patch_review import Dependency
 
 DEFAULT_MODEL = "Pro"
 DEFAULT_API_BASE = "https://api.openai.com/v1"
-API_KEY_NAME = "OPENAI_API_KEY"
+API_KEY_NAME = "MODEL_API_KEY"
 
 def get_api_key(name: str = API_KEY_NAME) -> str:
     """
@@ -28,9 +28,15 @@ def get_api_key(name: str = API_KEY_NAME) -> str:
             try:
                 env_var = getpass(f"Please enter your {name}: ").strip()
             except Exception:
-                raise RuntimeError(f"{name} is not set and user input failed.")
+                print(f"{name} is not set and user input failed.")
+                print("Switching to local mode...")
+                setattr(get_api_key, name, None)
+                return None
             if not env_var:
-                raise RuntimeError(f"{name} is required but was not provided.")
+                print(f"\n{name} is required but was not provided.")
+                print("Switching to local mode...")
+                setattr(get_api_key, name, None)
+                return None
         setattr(get_api_key, name, env_var)
     return getattr(get_api_key, name)
 
@@ -43,7 +49,7 @@ class AiReview(PatchReview):
     model: str = DEFAULT_MODEL
     api_base: str = DEFAULT_API_BASE
 
-    DEPENDENCIES = [ModelProviderDependency("OPENAI_API_KEY")]
+    DEPENDENCIES = [ModelProviderDependency("MODEL_API_KEY")]
 
     def format_chat_response(self, text: str) -> str:
         """
@@ -168,7 +174,7 @@ class AiReview(PatchReview):
         self.commit_message = self.repo.commit(self.commit).message.rstrip()
         if not self.commit_message:
             self.logger.error("Failed to retrieve commit message.")
-
+        
 def add_ai_arguments(
     parser_or_group: argparse.ArgumentParser | argparse._ArgumentGroup,
 ):
