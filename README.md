@@ -67,7 +67,7 @@
    Obtain your API key from your provider and set it as an environment variable:
 
    ```bash
-   export OPENAI_API_KEY=<your-api-key>
+   export MODEL_API_KEY=<your-api-key>
    ```
 
    Add this line to your shell profile (e.g., `~/.bashrc` or `~/.zshrc`) for persistence.
@@ -131,7 +131,7 @@ pip install /local/mnt/workspace/dgantman/kernel-tools/PatchWise
 # Required every time you start a new shell session
 # unless you've added it to your shell profile (e.g., ~/.bashrc or ~/.zshrc)
 # You can find your API key from your provider
-export OPENAI_API_KEY=<your-api-key>
+export MODEL_API_KEY=<your-api-key>
 
 ### Run PatchWise in your kernel workspace that has the patch you want to review already applied
 cd /local/mnt/workspace/dgantman/linux-next
@@ -156,7 +156,7 @@ patchwise --all-reviews
 
 - `--model`: Specify the AI model to use for code review. (default: `openai/Pro`).
 - `--provider`: The base URL for the AI model API. (default: `https://api.openai.com/v1`)
-- `--api-key`: The API key for the AI model API. If not provided, it will be read from the `OPENAI_API_KEY` environment variable.
+- `--api-key`: The API key for the AI model API. If not provided, it will be read from the `MODEL_API_KEY` environment variable.
 
 ### Logging Options
 
